@@ -37,8 +37,9 @@ nav a.active {
   color: #fdfdfd;
   text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
     0 0 8px #03edf975;
-  /* background: rgb(30, 167, 253); */
   font-weight: 700;
+  font-size: 24px;
+  line-height: 1.5;
 }
 
 .post {
@@ -235,7 +236,8 @@ a {
   margin-bottom: 16px;
 }
 
-.argument-list p {
+.argument-list p,
+.argument-list span {
   font-size: 14px;
 }
 

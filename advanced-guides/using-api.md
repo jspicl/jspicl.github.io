@@ -1,6 +1,6 @@
 ---
 layout: post.liquid
-title: Advanced Guide - Using the API
+title: Using the API
 sort: 2.1
 ---
 

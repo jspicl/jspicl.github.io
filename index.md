@@ -20,7 +20,7 @@ You have two paths forward, either using the API to transpile JavaScript to PICO
       Learn how to use the CLI to get you up and running quickly.
     </span>
   </a>
-  <a class="link-item" href="/advanced-guides/customized-transpilation">
+  <a class="link-item" href="/advanced-guides/using-api">
     <img src="/assets/images/direction.svg" alt="In-depth guides" />
     <span>
       <strong>Advanced guides</strong>

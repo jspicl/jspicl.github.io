@@ -1,6 +1,6 @@
 ---
 layout: post.liquid
-title: Advanced Guide - Customized Transpilation
+title: Customized Transpilation
 sort: 2.2
 ---
 
@@ -28,7 +28,7 @@ the AST node is that it contains a string property called `type` since this is u
   </a>
   <a
     class="link-item"
-    href="https://astexplorer.net"
+    href="https://github.com/AgronKabashi/trastpiler"
     target="_blank"
     rel="noopener"
   >
