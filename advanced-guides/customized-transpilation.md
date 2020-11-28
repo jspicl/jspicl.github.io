@@ -20,7 +20,7 @@ the AST node is that it contains a string property called `type` since this is u
     target="_blank"
     rel="noopener"
   >
-    <img src="/assets/images/astExplorer.png" alt="astexplorer.net" />
+    <img src="/assets/images/astexplorer.png" alt="astexplorer.net" />
     <span>
       <strong>AST Explorer</strong>
       Analyze and explore your code's Abstract Syntax Tree
