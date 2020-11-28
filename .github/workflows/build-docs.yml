@@ -1,0 +1,33 @@
+name: Commits to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm ci and build
+        run: |
+          echo ${{ github.ref }}
+          npm ci
+          npm run build
+          git add docs --force
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "CI: Automated build push"
+          git push
+        env:
+          CI: true
