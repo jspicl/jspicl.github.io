@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title></title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class=""
+        >Advanced Guide - Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class=""
+        >Advanced Guide - Customized Transpilation</a
+      ><a
+        href="/reference/api/"
+        class="active"
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class=""
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>API Reference</h1>
+<h4>AstNode</h4>
+<p>Represents a node in the syntax tree. All nodes contain at least a type property.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">AstNode</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token keyword">type</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span><br>  <span class="token punctuation">[</span>key<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h4>AstNodeParser</h4>
+<p>Contract for a parser function. The function should be named after the AST node type. Binding a scopeBoundary field on the function will create a new scope for all variables defined inside the hieararchy.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">AstNodeParser</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token punctuation">(</span>node<span class="token operator">:</span> Omit<span class="token operator">&lt;</span>AstNode<span class="token punctuation">,</span> <span class="token string">"type"</span><span class="token operator">></span><span class="token punctuation">,</span> options<span class="token operator">:</span> AstNodeParserOptions<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span><br>  scopeBoundary<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h4>AstNodeParserOptions</h4>
+<p>Includes references to the transpile function and scope.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">AstNodeParserOptions</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  transpile<span class="token operator">:</span> TranspileFunction<span class="token punctuation">;</span><br>  scope<span class="token operator">:</span> <span class="token punctuation">{</span><br>    variables<span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span><span class="token punctuation">;</span><br>    <span class="token punctuation">[</span>key<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h4>JspiclOptions</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">JspiclOptions</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  prettify<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span><br>  customMappers<span class="token operator">?</span><span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> AstNodeParser<span class="token operator">></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<ul class="argument-list">
+  <li>
+    <code>prettify: boolean = true</code>
+    <p>
+      Prettifies the transpiled code. By default, jspicl formats the Lua output for you but if performance ever
+      becomes an issue you can turn this off by setting this to false.
+    </p>
+  </li>
+  <li>
+    <code>customMappers: Record&lt;string, TranspileFunction&gt;</code>
+    <p>Custom handlers for transpiling expressions, declarations or statements.</p>
+  </li>
+</ul>
+<h4>TranspileFunction</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">TranspileFunction</span> <span class="token operator">=</span> <span class="token punctuation">(</span>node<span class="token operator">:</span> AstNode<span class="token punctuation">,</span> options<span class="token operator">?</span><span class="token operator">:</span> TranspileOptions<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">string</span><span class="token punctuation">;</span></code></pre>
+<h4>TranspileOptions</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">TranspileOptions</span> <span class="token operator">=</span> <span class="token punctuation">{</span> arraySeparator<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</main>
+</div>
+
+  </body>
+</html>

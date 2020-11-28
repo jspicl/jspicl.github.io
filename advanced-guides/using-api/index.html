@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title></title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class="active"
+        >Advanced Guide - Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class=""
+        >Advanced Guide - Customized Transpilation</a
+      ><a
+        href="/reference/api/"
+        class=""
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class=""
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>Using the API</h1>
+<p>The API can be used for transpiling JavaScript into the subset of Lua that PICO-8 uses.</p>
+<h2>Installation</h2>
+<pre class="language-bash-with-tab"><code class="language-bash-with-tab">npm install <span class="token function">jspicl</span> --save</code></pre>
+<h2>Usage</h2>
+<pre class="language-js-with-tab"><code class="language-js-with-tab"><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"jspicl"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> javascriptCode <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string"><br>  // Your code here<br></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span>code<span class="token punctuation">,</span> polyfills<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>javascriptCode<span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Known limitations</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ES2015+</td>
+<td>Not all ES2015+ features are supported. Run your code through a transpiler first such as <a href="https://www.npmjs.com/package/babel">babel</a> or <a href="https://esbuild.github.io/">esbuild</a>.</td>
+</tr>
+<tr>
+<td>prototype chains</td>
+<td>Not supported</td>
+</tr>
+<tr>
+<td>Array methods</td>
+<td>Not all prototype methods have been polyfilled yet.</td>
+</tr>
+<tr>
+<td>Math.max</td>
+<td>Only supports two arguments.</td>
+</tr>
+<tr>
+<td>AST</td>
+<td>Not all declarations, expressions and statements have been implemented. More will be added as needed.</td>
+</tr>
+</tbody>
+</table>
+</main>
+</div>
+
+  </body>
+</html>
