@@ -1,0 +1,14 @@
+{
+  "name": "jspicl.github.io",
+  "version": "1.0.0",
+  "description": "Web-based documentation for jspicl",
+  "scripts": {
+    "build": "eleventy --output=docs"
+  },
+  "author": "Agron Kabashi",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.4"
+  }
+}

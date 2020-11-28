@@ -1,0 +1,48 @@
+name: Commits to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - name: npm ci and build
+        run: |
+          npm ci
+          npm run build
+      - name: Generate docs artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docs-artifact
+          path: docs
+          if-no-files-found: error
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: gh-pages
+      - name: Clear directory
+        run: |
+          rm -rf $(ls -A | grep -v .git)
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: docs-artifact
+      - name: Push changes
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Automated deploy"
+          git push
+        env:
+          CI: true

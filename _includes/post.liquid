@@ -1,0 +1,18 @@
+---
+layout: main-layout.liquid
+---
+
+<div class="post">
+  <aside class="sidebar">
+    <nav>
+      {%- for post in collections.sortedPosts -%}
+      <a
+        href="{{ post.url }}"
+        class="{% if page.url == post.url %}active{% endif %}"
+        >{{ post.data.title }}</a
+      >
+      {%- endfor -%}
+    </nav>
+  </aside>
+  <main class="content">{{ content }}</main>
+</div>
