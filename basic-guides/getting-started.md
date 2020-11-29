@@ -41,6 +41,6 @@ jspicl-cli PATH_TO_YOUR_FILE game.p8 --watch
 
 Assuming you have PICO-8 installed in your system you should see the following:
 
-<img src="/assets/images/pico8-hello-world.png" width="320" class="center" />
+<img src="/assets/images/pico8-hello-world.png" width="320" class="center" alt="Hello World" />
 
 Any changes to the source code will reload PICO-8 automatically for you **(_only on Mac OS for now, other OS will need a manual reload with Ctrl+R_)**.

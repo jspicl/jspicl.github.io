@@ -211,10 +211,9 @@ a {
 }
 
 .subheading {
-  --mediumdark: #999999;
   font-weight: 900;
   font-size: 13px;
-  color: #999;
+  color: #666;
   letter-spacing: 6px;
   line-height: 24px;
   text-transform: uppercase;
