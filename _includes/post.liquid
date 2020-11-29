@@ -4,6 +4,8 @@ layout: main-layout.liquid
 
 <div class="post">
   <aside class="sidebar">
+    <input id="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger"></label>
     <nav>
       {%- for post in collections.sortedPosts -%}
       <a
