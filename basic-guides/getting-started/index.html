@@ -53,8 +53,10 @@ taking care of the build process so you can focus on the implementation.</p>
 <li>Use a PNG file for the spritesheet, enabling you to update it using an image editor of choice.</li>
 <li>Live reloading of PICO-8 cartridge whenever source code or spritesheet is updated.</li>
 </ul>
-<h2>Installation</h2>
-<pre class="language-bash-with-tab"><code class="language-bash-with-tab">npm install <span class="token function">jspicl-cli</span> -g</code></pre>
+<h2>Installation (optional)</h2>
+<p>Depending on your use case you can install the CLI globally, locally or use npx to run it directly.</p>
+<pre class="language-bash-with-tab"><code class="language-bash-with-tab">npm install <span class="token function">jspicl-cli</span> -g<br>npm install <span class="token function">jspicl-cli</span><br>npx <span class="token function">jspicl-cli</span> [&lt;args>]</code></pre>
+<p>Recommended use-case is to install it locally in your project and include it in the scripts section in package.json.</p>
 <h2>Usage</h2>
 <p>Let's start by creating a file with the following content:</p>
 <pre class="language-js-with-tab"><code class="language-js-with-tab"><span class="token keyword">function</span> <span class="token function">_draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">cls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
