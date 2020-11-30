@@ -294,6 +294,7 @@ a[href^="http"] {
 .link-item span {
   font-size: 14px;
   line-height: 20px;
+  font-weight: normal;
 }
 
 .tip {
