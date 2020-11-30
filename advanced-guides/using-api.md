@@ -29,10 +29,11 @@ console.log(code);
 
 ## Known limitations
 
-|                  |                                                                                                                                                                                 |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ES2015+          | Not all ES2015+ features are supported. Run your code through a transpiler first such as [babel](https://www.npmjs.com/package/babel) or [esbuild](https://esbuild.github.io/). |
-| prototype chains | Not supported                                                                                                                                                                   |
-| Array methods    | Not all prototype methods have been polyfilled yet.                                                                                                                             |
-| Math.max         | Only supports two arguments.                                                                                                                                                    |
-| AST              | Not all declarations, expressions and statements have been implemented. More will be added as needed.                                                                           |
+|                  |                                                                                                                                                                                         |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Array offsets    | Lua uses 1-based indexing for arrays which differ from JavaScript's zero-based. Keep this in mind when looping inside for-statements, you will need to explicitly use 1-based indexing. |
+| ES2015+          | Not all ES2015+ features are supported. Run your code through a transpiler first such as [babel](https://www.npmjs.com/package/babel) or [esbuild](https://esbuild.github.io/).         |
+| prototype chains | Not supported                                                                                                                                                                           |
+| Array methods    | Not all prototype methods have been polyfilled yet.                                                                                                                                     |
+| Math.max         | Only supports two arguments.                                                                                                                                                            |
+| AST              | Not all declarations, expressions and statements have been implemented. More will be added as needed.                                                                                   |
