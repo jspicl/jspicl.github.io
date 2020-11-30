@@ -79,6 +79,7 @@ You have two paths forward, either using the API to transpile JavaScript to PICO
     class="link-item"
     href="https://github.com/jspicl/jspicl-starter"
     target="_blank"
+    rel="noopener noreferrer"
   >
     <img src="/assets/images/repo.svg" alt="Starter Project" />
     <span>
