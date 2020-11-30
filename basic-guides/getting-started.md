@@ -16,11 +16,17 @@ taking care of the build process so you can focus on the implementation.
 - Use a PNG file for the spritesheet, enabling you to update it using an image editor of choice.
 - Live reloading of PICO-8 cartridge whenever source code or spritesheet is updated.
 
-## Installation
+## Installation (optional)
+
+Depending on your use case you can install the CLI globally, locally or use npx to run it directly.
 
 ```bash-with-tab
 npm install jspicl-cli -g
+npm install jspicl-cli
+npx jspicl-cli [<args>]
 ```
+
+Recommended use-case is to install it locally in your project and include it in the scripts section in package.json.
 
 ## Usage
 
