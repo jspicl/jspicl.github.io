@@ -1,0 +1,52 @@
+name: Deploy Pages
+
+on:
+  repository_dispatch:
+    types: [deploy]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Run ID from jspicl repository"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout jspicl.github.io
+        uses: actions/checkout@v6
+
+      - name: Download artifacts from jspicl repo
+        uses: actions/download-artifact@v7
+        with:
+          name: docs
+          path: dist
+          github-token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          repository: "jspicl/jspicl"
+          run-id: ${{ github.event.client_payload.run_id || github.event.inputs.run_id }}
+
+      - name: Deploy artifacts
+        run: |
+          # Clear current directory (except .git and .github)
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.github' ! -name 'dist' -exec rm -rf {} +
+
+          # Move new docs to root
+          mv dist/* .
+          rmdir dist
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Deploy from @jspicl/jspicl@${{ github.event.client_payload.sha }}"
+            git push
+          fi
