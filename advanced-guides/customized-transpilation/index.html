@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>jspicl - Customized Transpilation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <input id="hamburger" name="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger">
+      <div class="hamburger-icon"></div>
+    </label>
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class=""
+        >Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class="active"
+        >Customized Transpilation</a
+      ><a
+        href="/example-projects/"
+        class=""
+        >Example Projects</a
+      ><a
+        href="/migration-guide/"
+        class=""
+        >Migration Guide</a
+      ><a
+        href="/troubleshooting/"
+        class=""
+        >Troubleshooting</a
+      ><a
+        href="/reference/api/"
+        class=""
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class=""
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>Customized transpilation</h1>
+<p>jspicl does not support all expressions and statements out of the box but it is
+extensible enough to allow for these to be added. It also allows existing ones to
+be replaced if the implementation is considered unsatisfactory.
+This is done by supplying a <code>customMappers</code> option. The only requirement imposed on
+the AST node is that it contains a string property called <code>type</code> since this is used to identify the appropriate declaration, expression or statement.</p>
+<div class="subheading">Resources</div>
+<div class="link-list">
+  <a
+    class="link-item"
+    href="https://astexplorer.net"
+    target="_blank"
+    rel="noopener"
+  >
+    <img src="/assets/images/astexplorer.png" alt="astexplorer.net" />
+    <span>
+      <strong>AST Explorer</strong>
+      Analyze and explore your code's Abstract Syntax Tree
+    </span>
+  </a>
+  <a
+    class="link-item"
+    href="https://github.com/AgronKabashi/trastpiler"
+    target="_blank"
+    rel="noopener"
+  >
+    <img src="/assets/images/github.svg" alt="Trastpiler" />
+    <span>
+      <strong>Trastpiler</strong>
+      An agnostic transpiler for Abstract Syntax Trees. <code>jspicl</code> is built
+      on top of Trastpiler.
+    </span>
+  </a>
+</div>
+<pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/core"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> customMappers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Replace the default while-statement implementation</span><br>  <span class="token function-variable function">WhileStatement</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span>body<span class="token punctuation">,</span> test<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>transpile<span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span><br>    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">while </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">transpile</span><span class="token punctuation">(</span>test<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> do<br>      -- We have full control of the output!<br>      </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">transpile</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"><br>    end</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span><br><br>  <span class="token comment">// Add support for missing features</span><br>  <span class="token function-variable function">ForOfStatement</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span>left<span class="token punctuation">,</span> right<span class="token punctuation">,</span> body<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>transpile<span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// ...</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><br>  <span class="token comment">// Custom statements, declarations and expressions are also valid</span><br>  <span class="token comment">// as long as the nodes are included in the AST</span><br>  <span class="token function-variable function">SuperDuperComment</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">-- You're doing great!</span><span class="token template-punctuation string">`</span></span><br><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span>code<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>javascriptCode<span class="token punctuation">,</span> <span class="token punctuation">{</span>customMappers<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</main>
+</div>
+
+  </body>
+</html>

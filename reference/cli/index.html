@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>jspicl - Reference - CLI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <input id="hamburger" name="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger">
+      <div class="hamburger-icon"></div>
+    </label>
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class=""
+        >Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class=""
+        >Customized Transpilation</a
+      ><a
+        href="/example-projects/"
+        class=""
+        >Example Projects</a
+      ><a
+        href="/migration-guide/"
+        class=""
+        >Migration Guide</a
+      ><a
+        href="/troubleshooting/"
+        class=""
+        >Troubleshooting</a
+      ><a
+        href="/reference/api/"
+        class=""
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class="active"
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>CLI Reference</h1>
+<h2>Installation</h2>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">-D</span> @jspicl/cli</code></pre>
+<h2>Usage</h2>
+<pre class="language-bash"><code class="language-bash">jspicl <span class="token operator">&lt;</span>input<span class="token operator">></span> <span class="token operator">&lt;</span>output<span class="token operator">></span> <span class="token parameter variable">--config</span> <span class="token operator">&lt;</span>config-file<span class="token operator">></span> <span class="token punctuation">[</span>--watch<span class="token punctuation">]</span></code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-bash"><code class="language-bash">jspicl src/game.js build/game.p8 <span class="token parameter variable">--config</span> jspicl.config.ts <span class="token parameter variable">--watch</span></code></pre>
+<h2>CLI Options</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--config</code>, <code>-c</code></td>
+<td>Path to config file (required)</td>
+</tr>
+<tr>
+<td><code>--watch</code>, <code>-w</code></td>
+<td>Watch for changes and rebuild</td>
+</tr>
+</tbody>
+</table>
+<h2>Config File</h2>
+<p>Create a config file (JavaScript or TypeScript):</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span>Config<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/cli/types"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"assets/sprites.png"</span><span class="token punctuation">,</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><span class="token punctuation">,</span><br>  showStats<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    executablePath<span class="token operator">:</span> <span class="token string">"/Applications/PICO-8.app/Contents/MacOS/pico8"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
+<p><strong>Note:</strong> Config file paths (<code>jsOutput</code>, <code>luaOutput</code>, <code>spritesheetImagePath</code>) are resolved relative to the config file's directory unless an absolute path is specified.</p>
+<h3>Config Options</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spritesheetImagePath</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>Path to PNG spritesheet</td>
+</tr>
+<tr>
+<td><code>jsOutput</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>Path to output bundled JavaScript (for debugging)</td>
+</tr>
+<tr>
+<td><code>includeBanner</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Include jspicl info comment in output</td>
+</tr>
+<tr>
+<td><code>luaOutput</code></td>
+<td>string</td>
+<td>No</td>
+<td>Path to output transpiled Lua (for debugging)</td>
+</tr>
+<tr>
+<td><code>minify</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Experimental: Minify bundled JavaScript via esbuild</td>
+</tr>
+<tr>
+<td><code>pipeOutputToConsole</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Pipe PICO-8 output to terminal</td>
+</tr>
+<tr>
+<td><code>showStats</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Display build statistics</td>
+</tr>
+<tr>
+<td><code>jspiclOptions</code></td>
+<td>object</td>
+<td>No</td>
+<td>Options passed to @jspicl/core (prettify, etc.)</td>
+</tr>
+<tr>
+<td><code>polyfillTransform</code></td>
+<td>function</td>
+<td>No</td>
+<td>Custom function to transform polyfill output</td>
+</tr>
+<tr>
+<td><code>picoOptions</code></td>
+<td>object</td>
+<td>No</td>
+<td>PICO-8 configuration (see below)</td>
+</tr>
+</tbody>
+</table>
+<h3>picoOptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>executablePath</code></td>
+<td>string</td>
+<td>Custom path to PICO-8 executable</td>
+</tr>
+<tr>
+<td><code>cartDataPath</code></td>
+<td>string</td>
+<td>Path to PICO-8 cart data directory</td>
+</tr>
+<tr>
+<td><code>cartDataId</code></td>
+<td>string</td>
+<td>Cart data ID for hot reload (default: &quot;jspicl_hotreload&quot;)</td>
+</tr>
+</tbody>
+</table>
+<h2>Watch Mode</h2>
+<p>The CLI will listen for changes when the <code>--watch</code> option is passed.</p>
+<p><video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading.mp4"></video></p>
+<p>This applies for the spritesheet as well. Simply save your image and your changes will be reloaded in PICO-8.</p>
+<p><video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading2.mp4"></video></p>
+<p><strong>Note:</strong> Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.</p>
+</main>
+</div>
+
+  </body>
+</html>

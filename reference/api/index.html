@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>jspicl - Reference - API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <input id="hamburger" name="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger">
+      <div class="hamburger-icon"></div>
+    </label>
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class=""
+        >Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class=""
+        >Customized Transpilation</a
+      ><a
+        href="/example-projects/"
+        class=""
+        >Example Projects</a
+      ><a
+        href="/migration-guide/"
+        class=""
+        >Migration Guide</a
+      ><a
+        href="/troubleshooting/"
+        class=""
+        >Troubleshooting</a
+      ><a
+        href="/reference/api/"
+        class="active"
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class=""
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>API Reference</h1>
+<h4>jspicl</h4>
+<p>Entry point for transpiling your JavaScript code.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>source<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> options<span class="token operator">?</span><span class="token operator">:</span> Options<span class="token punctuation">)</span><span class="token operator">:</span> Output<span class="token punctuation">;</span></code></pre>
+<ul class="argument-list">
+  <li>
+    <code>root</code>
+    <span>
+      Root node of your AST. Jspicl will traverse and transpile the entire hierarchy.
+    </span>
+  </li>
+  <li>
+    <code>options</code>
+    <span>Configuration options that affect the final output.</span>
+  </li>
+</ul>
+<h4>Options</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">Options</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  prettify<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span><br>  customMappers<span class="token operator">?</span><span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> AstNodeVisitor<span class="token operator">></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<ul class="argument-list">
+  <li>
+    <code>prettify = true</code>
+    <span>
+      Prettifies the transpiled code. By default, jspicl formats the Lua output for you but if performance ever
+      becomes an issue you can turn this off by setting this to false.
+    </span>
+  </li>
+  <li>
+    <code>customMappers</code>
+    <span>Custom handlers for transpiling expressions, declarations or statements.</span>
+  </li>
+</ul>
+<h4>Output</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">Output</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  code<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span><br>  polyfills<span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">string</span><span class="token operator">></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<ul class="argument-list">
+  <li>
+    <code>code</code>
+    <span>
+      The transpiled Lua code.
+    </span>
+  </li>
+  <li>
+    <code>polyfills</code>
+    <span>
+      A hashmap of detected polyfills. The polyfills are recommended but you can replace them with your own implementation if needed. Generate the final result by joining the values: <code>Object.values(polyfills).join("\n")</code>
+    </span>
+  </li>
+</ul>
+<h4>ASTNode</h4>
+<p>Represents a node in the syntax tree. All nodes contain at least a type property.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">ASTNode</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  type<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span><br>  <span class="token punctuation">[</span>key<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h4>AstNodeVisitor</h4>
+<p>Contract for a visitor function. The function should be named after the AST node type. Binding a scopeBoundary field on the function will create a new scope for all variables defined inside the hierarchy.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">AstNodeVisitor<span class="token operator">&lt;</span><span class="token constant">T</span> <span class="token keyword">extends</span> ASTNode <span class="token operator">=</span> ASTNode<span class="token operator">></span></span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token punctuation">(</span>node<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">,</span> options<span class="token operator">:</span> AstNodeVisitorOptions<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span><br>  scopeBoundary<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h4>AstNodeVisitorOptions</h4>
+<p>Includes references to the transpile function and scope.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">AstNodeVisitorOptions</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  transpile<span class="token operator">:</span> TranspileFunction<span class="token punctuation">;</span><br>  scope<span class="token operator">:</span> <span class="token punctuation">{</span><br>    variables<span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span><span class="token punctuation">;</span><br>    <span class="token punctuation">[</span>key<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h4>TranspileFunction</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">TranspileFunction</span> <span class="token operator">=</span> <span class="token punctuation">(</span>node<span class="token operator">:</span> ASTNode<span class="token punctuation">,</span> options<span class="token operator">?</span><span class="token operator">:</span> TranspileOptions<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">string</span><span class="token punctuation">;</span></code></pre>
+<h4>TranspileOptions</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">TranspileOptions</span> <span class="token operator">=</span> <span class="token punctuation">{</span>arraySeparator<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</main>
+</div>
+
+  </body>
+</html>

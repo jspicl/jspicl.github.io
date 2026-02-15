@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>jspicl - Migration Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <input id="hamburger" name="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger">
+      <div class="hamburger-icon"></div>
+    </label>
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class=""
+        >Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class=""
+        >Customized Transpilation</a
+      ><a
+        href="/example-projects/"
+        class=""
+        >Example Projects</a
+      ><a
+        href="/migration-guide/"
+        class="active"
+        >Migration Guide</a
+      ><a
+        href="/troubleshooting/"
+        class=""
+        >Troubleshooting</a
+      ><a
+        href="/reference/api/"
+        class=""
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class=""
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>Migration Guide</h1>
+<h2>Upgrading to v4</h2>
+<h3>Package Names Changed</h3>
+<p>The packages have been renamed to use the <code>@jspicl</code> scope:</p>
+<table>
+<thead>
+<tr>
+<th>Old</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jspicl</code></td>
+<td><code>@jspicl/core</code></td>
+</tr>
+<tr>
+<td><code>jspicl-cli</code></td>
+<td><code>@jspicl/cli</code></td>
+</tr>
+</tbody>
+</table>
+<p>Update your imports:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Before</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"jspicl"</span><span class="token punctuation">;</span><br><br><span class="token comment">// After</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/core"</span><span class="token punctuation">;</span></code></pre>
+<h3>CLI Now Requires Config File</h3>
+<p>The CLI no longer accepts all options as command-line arguments. Create a config file instead:</p>
+<pre class="language-bash"><code class="language-bash"><span class="token comment"># Before</span><br>jspicl-cli src/game.js game.p8 <span class="token parameter variable">--spritesheetImagePath</span> sprites.png <span class="token parameter variable">--watch</span><br><br><span class="token comment"># After</span><br>jspicl src/game.js game.p8 <span class="token parameter variable">--config</span> jspicl.config.ts <span class="token parameter variable">--watch</span></code></pre>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span>Config<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/cli/types"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"sprites.png"</span><span class="token punctuation">,</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
+<h3>Rollup Plugin Deprecated</h3>
+<p>The <code>rollup-plugin-jspicl</code> package is no longer maintained. Use <code>@jspicl/cli</code> instead, which includes esbuild for bundling.</p>
+<h3>PICO-8 Path Configuration</h3>
+<p>The <code>customPicoPath</code> option is now nested under <code>picoOptions</code>:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// Before</span><br><span class="token punctuation">{</span><br>  customPicoPath<span class="token operator">:</span> <span class="token string">"/path/to/pico8"</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token comment">// After</span><br><span class="token punctuation">{</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    executablePath<span class="token operator">:</span> <span class="token string">"/path/to/pico8"</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+<h3>Hot Reload Changes</h3>
+<p>Hot reload now uses PICO-8's cart data mechanism instead of AppleScript-only reload. This adds Linux support.</p>
+<p>Configure the cart data path if needed:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token punctuation">{</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    cartDataPath<span class="token operator">:</span> <span class="token string">"~/.lexaloffle/pico-8/cdata"</span><span class="token punctuation">,</span><br>    cartDataId<span class="token operator">:</span> <span class="token string">"my_game_hotreload"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</main>
+</div>
+
+  </body>
+</html>

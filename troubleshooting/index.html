@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>jspicl - Troubleshooting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="/assets/css/main.css" rel="stylesheet" />
+  <link href="/assets/css/code-theme.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    
+<div class="post">
+  <aside class="sidebar">
+    <input id="hamburger" name="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger">
+      <div class="hamburger-icon"></div>
+    </label>
+    <nav><a
+        href="/"
+        class=""
+        >Introduction</a
+      ><a
+        href="/basic-guides/getting-started/"
+        class=""
+        >Getting Started</a
+      ><a
+        href="/advanced-guides/using-api/"
+        class=""
+        >Using the API</a
+      ><a
+        href="/advanced-guides/customized-transpilation/"
+        class=""
+        >Customized Transpilation</a
+      ><a
+        href="/example-projects/"
+        class=""
+        >Example Projects</a
+      ><a
+        href="/migration-guide/"
+        class=""
+        >Migration Guide</a
+      ><a
+        href="/troubleshooting/"
+        class="active"
+        >Troubleshooting</a
+      ><a
+        href="/reference/api/"
+        class=""
+        >Reference - API</a
+      ><a
+        href="/reference/cli/"
+        class=""
+        >Reference - CLI</a
+      ></nav>
+  </aside>
+  <main class="content"><h1>Troubleshooting</h1>
+<h2>Array Index Off By One</h2>
+<p><strong>Problem:</strong> My array access returns the wrong element.</p>
+<p><strong>Cause:</strong> Lua uses 1-based indexing, JavaScript uses 0-based.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// JavaScript - gets first element</span><br><span class="token keyword">const</span> first <span class="token operator">=</span> arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Generated Lua - still uses 0, but Lua arrays start at 1!</span><br>local first <span class="token operator">=</span> arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>  <span class="token operator">--</span> Returns nil</code></pre>
+<p><strong>Solution:</strong> Explicitly use 1-based indexing in your JavaScript when targeting PICO-8:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Use 1-based indexing</span><br><span class="token keyword">const</span> first <span class="token operator">=</span> arr<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Or add 1 to loop indices</span><br><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span></code></pre>
+<h2>PICO-8 Won't Auto-Reload</h2>
+<p><strong>Problem:</strong> Changes don't appear in PICO-8 automatically.</p>
+<p><strong>Checklist:</strong></p>
+<ol>
+<li>
+<p><strong>OS Support</strong> - Auto-reload works on macOS and Linux. Windows requires manual Ctrl+R.</p>
+</li>
+<li>
+<p><strong>Executable Path</strong> - The cli will use default Pico-8 installation paths by default. If you've installed it in a different path, please ensure <code>picoOptions.executablePath</code> points to the correct PICO-8 binary:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br> picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>   <span class="token comment">// macOS</span><br>   executablePath<span class="token operator">:</span> <span class="token string">"/Applications/PICO-8.app/Contents/MacOS/pico8"</span><br>   <span class="token comment">// Linux</span><br>   executablePath<span class="token operator">:</span> <span class="token string">"~/home/USERNAME~/pico-8/pico8"</span><br> <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</li>
+<li>
+<p><strong>Cart Data Path</strong> - Hot reload uses cart data to enable hot reloading. If you're not using the default folder please make sure that you're setting it explicitly in the config:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    cartDataPath<span class="token operator">:</span> <span class="token string">"~/Library/Application Support/pico-8/cdata/"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</li>
+</ol>
+<h2>Spritesheet Not Loading</h2>
+<p><strong>Problem:</strong> Sprites appear as black boxes or don't show.</p>
+<p><strong>Checklist:</strong></p>
+<ol>
+<li>
+<p><strong>File format</strong> - Only PNG is supported.</p>
+</li>
+<li>
+<p><strong>Dimensions</strong> - Must be 128x128 pixels</p>
+</li>
+<li>
+<p><strong>Path</strong> - Unless you specify an absolute path, paths will be relative to the config file location:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// If config is in project root</span><br><span class="token punctuation">{</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"assets/sprites.png"</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</li>
+</ol>
+<h2>&quot;Unsupported syntax&quot; Error</h2>
+<p><strong>Problem:</strong> jspicl throws an error about unsupported syntax.</p>
+<p><strong>Common causes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Status</th>
+<th>Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>async/await</code></td>
+<td>Not supported</td>
+<td>Use synchronous code</td>
+</tr>
+<tr>
+<td><code>generators</code></td>
+<td>Not supported</td>
+<td>Use loops</td>
+</tr>
+</tbody>
+</table>
+<p>If you need unsupported syntax, you can use <code>customMappers</code> to add support.</p>
+<hr>
+<h2>Build Works But Game Crashes</h2>
+<p><strong>Problem:</strong> Cartridge generates but PICO-8 shows runtime errors.</p>
+<p><strong>Debug steps:</strong></p>
+<ol>
+<li>
+<p><strong>Check Lua output</strong> - Look at the generated code in Pico-8 directly or set <code>luaOutput</code> to inspect generated code:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token punctuation">{</span><br>  luaOutput<span class="token operator">:</span> <span class="token string">"build/debug.lua"</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</li>
+<li>
+<p><strong>Enable console output</strong>:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token punctuation">{</span><br>  pipeOutputToConsole<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">// printh will output to the terminal</span><br><span class="token punctuation">}</span></code></pre>
+</li>
+<li>
+<p><strong>Common runtime issues:</strong></p>
+<ul>
+<li>Nil access (usually 0-index vs 1-index)</li>
+<li>Missing <code>local</code> (jspicl adds these, but check custom code)</li>
+<li>Infinite loops blocking PICO-8</li>
+</ul>
+</li>
+</ol>
+</main>
+</div>
+
+  </body>
+</html>
