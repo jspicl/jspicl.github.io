@@ -102,6 +102,25 @@
     </span>
   </li>
 </ul>
+<h3>Types</h3>
+<p>Types can be imported from <code>@jspicl/core/types</code>:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span><br>  JspiclOptions<span class="token punctuation">,</span><br>  JspiclOutput<span class="token punctuation">,</span><br>  AstNodeParser<br><span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/core/types"</span><span class="token punctuation">;</span></code></pre>
+<h2>Custom Mappers</h2>
+<p>You can provide custom mappers to override how specific AST node types are transpiled:</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/core"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> customMappers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token function-variable function">Literal</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span>raw<span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// Custom handling for literals</span><br>    <span class="token keyword">return</span> raw <span class="token operator">===</span> <span class="token string">"null"</span> <span class="token operator">?</span> <span class="token string">"nil"</span> <span class="token operator">:</span> raw<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>source<span class="token punctuation">,</span> <span class="token punctuation">{</span>customMappers<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Each mapper receives the AST node and an options object with:</p>
+<ul>
+<li><code>transpile</code> - Function to recursively transpile child nodes</li>
+<li><code>scope</code> - Object containing variable metadata and scope information</li>
+</ul>
+<h2>Supported Polyfills</h2>
+<p>When your JavaScript uses methods without direct Lua equivalents, jspicl automatically detects and provides polyfill implementations:</p>
+<ul>
+<li>Array methods: <code>map</code>, <code>filter</code>, <code>reduce</code>, <code>includes</code>, <code>findIndex</code>, <code>join</code>, <code>pop</code>, <code>sort</code></li>
+<li>String methods: <code>split</code>, <code>substr</code>, <code>substring</code>, <code>toString</code></li>
+<li>Object methods: <code>Object.assign</code>, <code>Object.keys</code>, <code>Object.values</code>, <code>Object.entries</code></li>
+</ul>
+<p>The polyfills are returned separately so you can include them once at the top of your PICO-8 cartridge.</p>
 <h4>ASTNode</h4>
 <p>Represents a node in the syntax tree. All nodes contain at least a type property.</p>
 <pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">ASTNode</span> <span class="token operator">=</span> <span class="token punctuation">{</span><br>  type<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span><br>  <span class="token punctuation">[</span>key<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
