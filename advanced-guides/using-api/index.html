@@ -1,59 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <title>jspicl - Using the API</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="/assets/css/main.css" rel="stylesheet" />
-  <link href="/assets/css/code-theme.css" rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
-    rel="stylesheet"
-  />
+  <head>
+    <title>jspicl - Using the API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="/assets/css/main.css" rel="stylesheet" />
+    <link href="/assets/css/code-theme.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
   <body>
+    <header class="top-nav">
+      <div class="top-nav-inner">
+        <a href="/" class="logo">
+          <img src="/assets/images/logo-366x250.png" alt="jspicl" class="logo-image" />
+          <span class="logo-text">jspicl</span>
+        </a>
+        <div class="search-container">
+          <input type="text" id="search-input" placeholder="Search docs..." autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+        <nav class="top-nav-links"><a href="https://github.com/jspicl/jspicl" target="_blank" rel="noopener noreferrer">
+          
+            <img src="/assets/images/github-white.svg" width="16" />
+          
+          </a></nav>
+
+      </div>
+    </header>
     
 <div class="post">
   <aside class="sidebar">
     <input id="hamburger" name="hamburger" type="checkbox">
+
     <label class="hamburger-label" for="hamburger">
       <div class="hamburger-icon"></div>
     </label>
-    <nav><a
-        href="/"
-        class=""
-        >Introduction</a
-      ><a
-        href="/basic-guides/getting-started/"
-        class=""
-        >Getting Started</a
-      ><a
-        href="/advanced-guides/using-api/"
-        class="active"
-        >Using the API</a
-      ><a
-        href="/advanced-guides/customized-transpilation/"
-        class=""
-        >Customized Transpilation</a
-      ><a
-        href="/example-projects/"
-        class=""
-        >Example Projects</a
-      ><a
-        href="/migration-guide/"
-        class=""
-        >Migration Guide</a
-      ><a
-        href="/troubleshooting/"
-        class=""
-        >Troubleshooting</a
-      ><a
-        href="/reference/api/"
-        class=""
-        >Reference - API</a
-      ><a
-        href="/reference/cli/"
-        class=""
-        >Reference - CLI</a
-      ></nav>
+    <nav class="sidebar-nav"><div class="nav-section">
+        <div class="nav-section-header">Getting Started</div>
+        <div class="nav-section-items"><a href="/"
+             class="nav-item">
+            Introduction
+          </a><a href="/basic-guides/getting-started/"
+             class="nav-item">
+            Getting Started
+          </a></div>
+      </div><div class="nav-section">
+        <div class="nav-section-header">Advanced Guides</div>
+        <div class="nav-section-items"><a href="/advanced-guides/using-api/"
+             class="nav-item active">
+            Using the API
+          </a><a href="/advanced-guides/customized-transpilation/"
+             class="nav-item">
+            Customized Transpilation
+          </a></div>
+      </div><div class="nav-section">
+        <div class="nav-section-header">Examples & Migration</div>
+        <div class="nav-section-items"><a href="/example-projects/"
+             class="nav-item">
+            Example Projects
+          </a><a href="/migration-guide/"
+             class="nav-item">
+            Migration Guide
+          </a><a href="/troubleshooting/"
+             class="nav-item">
+            Troubleshooting
+          </a></div>
+      </div><div class="nav-section">
+        <div class="nav-section-header">Reference</div>
+        <div class="nav-section-items"><a href="/reference/api/"
+             class="nav-item">
+            API Reference
+          </a><a href="/reference/cli/"
+             class="nav-item">
+            CLI Reference
+          </a></div>
+      </div></nav>
   </aside>
   <main class="content"><h1>Using the API</h1>
 <p>The API can be used for transpiling JavaScript into the subset of Lua that PICO-8 uses.</p>
@@ -99,5 +123,46 @@
 </main>
 </div>
 
+    <script>
+      const searchData = [{
+          title: "Introduction",
+          url: "/",
+          content: "Welcome to the jspicl documentation jspicl is a JavaScript to PICO-8 Lua transpiler. It enables you to develop PICO-8 games in JavaScript by creating an AST out of the JavaScript code and then transpiling it down to the Lua subset of which PICO-8 supports. You have two paths forward, either using the API to transpile JavaScript to PICO-8 Lua or the CLI which uses the API behind the scenes to create PICO-8 cartridges. Guides Basic guides Learn how to use the CLI to get you up and running quick..."
+        },{
+          title: "Getting Started",
+          url: "/basic-guides/getting-started/",
+          content: "Getting Started The jspicl CLI streamlines your PICO-8 game development by taking care of the build process so you can focus on the implementation. Features: Built-in build pipeline powered by esbuild Tree-shaking to minimize token count PNG spritesheet support - use your favorite image editor Live reloading with watch mode Installation npm install -D @jspicl/cli Usage First, create a config file: // jspicl.config.ts import type { Config } from \"@jspicl/cli/types\" ; const config : Config = ..."
+        },{
+          title: "Using the API",
+          url: "/advanced-guides/using-api/",
+          content: "Using the API The API can be used for transpiling JavaScript into the subset of Lua that PICO-8 uses. Installation npm install @jspicl/core Usage import { jspicl } from \"@jspicl/core\" ; const javascriptCode = ` // Your code here ` ; const { code , polyfills } = jspicl ( javascriptCode ) ; console . log ( code ) ; Known limitations Array offsets Lua uses 1-based indexing for arrays which differ from JavaScript's zero-based. Keep this in mind when looping inside for-statements, you will need ..."
+        },{
+          title: "Customized Transpilation",
+          url: "/advanced-guides/customized-transpilation/",
+          content: "Customized transpilation jspicl does not support all expressions and statements out of the box but it is extensible enough to allow for these to be added. It also allows existing ones to be replaced if the implementation is considered unsatisfactory. This is done by supplying a customMappers option. The only requirement imposed on the AST node is that it contains a string property called type since this is used to identify the appropriate declaration, expression or statement. Resources AST Ex..."
+        },{
+          title: "Example Projects",
+          url: "/example-projects/",
+          content: "Example Projects Games and templates built with jspicl. Mario Sample A platformer template with Mario-style mechanics: running, jumping, enemies, and tile-based collision. Megaman Sample Action platformer template with shooting mechanics, enemy AI, and screen transitions. Starter Template Minimal project setup to start building from scratch. Includes config, example game loop, and build scripts. Community Games Have you built something with jspicl? Tag your repository with jspicl-game on GitH..."
+        },{
+          title: "Migration Guide",
+          url: "/migration-guide/",
+          content: "Migration Guide Upgrading to v4 Package Names Changed The packages have been renamed to use the @jspicl scope: Old New jspicl @jspicl/core jspicl-cli @jspicl/cli Update your imports: // Before import { jspicl } from \"jspicl\" ; // After import { jspicl } from \"@jspicl/core\" ; CLI Now Requires Config File The CLI no longer accepts all options as command-line arguments. Create a config file instead: # Before jspicl-cli src/game.js game.p8 --spritesheetImagePath sprites.png --watch # After js..."
+        },{
+          title: "Troubleshooting",
+          url: "/troubleshooting/",
+          content: "Troubleshooting Array Index Off By One Problem: My array access returns the wrong element. Cause: Lua uses 1-based indexing, JavaScript uses 0-based. // JavaScript - gets first element const first = arr [ 0 ] ; // Generated Lua - still uses 0, but Lua arrays start at 1! local first = arr [ 0 ] -- Returns nil Solution: Explicitly use 1-based indexing in your JavaScript when targeting PICO-8: // Use 1-based indexing const first = arr [ 1 ] ; // Or add 1 to loop indices for ( let i = 1 ; i &lt;=..."
+        },{
+          title: "Reference - API",
+          url: "/reference/api/",
+          content: "API Reference jspicl Entry point for transpiling your JavaScript code. function jspicl ( source : string , options ? : Options ) : Output ; root Root node of your AST. Jspicl will traverse and transpile the entire hierarchy. options Configuration options that affect the final output. Options type Options = { prettify ? : boolean ; customMappers ? : Record &lt; string , AstNodeVisitor > ; } ; prettify = true Prettifies the transpiled code. By default, jspicl formats the Lua output for you but ..."
+        },{
+          title: "Reference - CLI",
+          url: "/reference/cli/",
+          content: "CLI Reference Installation npm install -D @jspicl/cli Usage jspicl &lt; input > &lt; output > --config &lt; config-file > [ --watch ] Example: jspicl src/game.js build/game.p8 --config jspicl.config.ts --watch CLI Options Name Description --config , -c Path to config file (required) --watch , -w Watch for changes and rebuild Config File Create a config file (JavaScript or TypeScript): // jspicl.config.ts import type { Config } from \"@jspicl/cli/types\" ; const config : Config = { spritesheet..."
+        }];
+    </script>
+    <script src="/assets/js/navigation.js"></script>
+    <script src="/assets/js/search.js"></script>
   </body>
 </html>
