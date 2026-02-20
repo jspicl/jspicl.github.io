@@ -3,6 +3,7 @@
   <head>
     <title>jspicl - Getting Started</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Install the jspicl CLI and build your first PICO-8 game in JavaScript. Includes setup, configuration, and live reload.">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="/assets/css/main.css" rel="stylesheet" />
@@ -69,15 +70,6 @@
             Troubleshooting
           </a></div>
       </div><div class="nav-section">
-        <div class="nav-section-header">Reference</div>
-        <div class="nav-section-items"><a href="/reference/api/"
-             class="nav-item">
-            API Reference
-          </a><a href="/reference/cli/"
-             class="nav-item">
-            CLI Reference
-          </a></div>
-      </div><div class="nav-section">
         <div class="nav-section-header">Recipes</div>
         <div class="nav-section-items"><a href="/recipes/debugging-with-printh/"
              class="nav-item">
@@ -88,6 +80,18 @@
           </a><a href="/recipes/polyfill-transform/"
              class="nav-item">
             Custom Polyfill Transforms
+          </a></div>
+      </div><div class="nav-section">
+        <div class="nav-section-header">Reference</div>
+        <div class="nav-section-items"><a href="/reference/api/"
+             class="nav-item">
+            API Reference
+          </a><a href="/reference/cli/"
+             class="nav-item">
+            CLI Reference
+          </a><a href="/reference/supported-features/"
+             class="nav-item">
+            Supported Features
           </a></div>
       </div></nav>
   </aside>
@@ -107,13 +111,27 @@ taking care of the build process so you can focus on the implementation.</p>
 <p>First, create a config file:</p>
 <pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span>Config<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/cli/types"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><span class="token punctuation">,</span><br>  showStats<span class="token operator">:</span> <span class="token boolean">true</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
 <p>Then create your game file:</p>
-<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">_draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">cls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+<pre class="language-js"><code class="language-js"><span class="token comment">// src/game.js</span><br><span class="token keyword">function</span> <span class="token function">_init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  x <span class="token operator">=</span> <span class="token number">64</span><span class="token punctuation">;</span><br>  y <span class="token operator">=</span> <span class="token number">64</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">_update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> x <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> x <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> y <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span> y <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">_draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">cls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">circfill</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
 <p>Now run the CLI to generate a PICO-8 cartridge:</p>
 <pre class="language-bash"><code class="language-bash">jspicl src/game.js build/game.p8 <span class="token parameter variable">--config</span> jspicl.config.ts <span class="token parameter variable">--watch</span></code></pre>
 <p>Assuming you have PICO-8 installed on your system, you should see the following:</p>
 <img src="/assets/images/pico8-hello-world.png" width="320" class="center" alt="Hello World" />
 <p>Any changes to the source code will reload PICO-8 automatically for you.</p>
 <p><strong>Note:</strong> Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.</p>
+<h2>What Gets Generated</h2>
+<p>Your JavaScript is transpiled to PICO-8 Lua. The example above becomes:</p>
+<pre class="language-lua"><code class="language-lua"><span class="token keyword">function</span> <span class="token function">_init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br>  x <span class="token operator">=</span> <span class="token number">64</span><br>  y <span class="token operator">=</span> <span class="token number">64</span><br><span class="token keyword">end</span><br><br><span class="token keyword">function</span> <span class="token function">_update</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br>  <span class="token keyword">if</span> <span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">then</span><br>    x <span class="token operator">-</span><span class="token operator">=</span> <span class="token number">1</span><br>  <span class="token keyword">end</span><br>  <span class="token keyword">if</span> <span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">then</span><br>    x <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">1</span><br>  <span class="token keyword">end</span><br>  <span class="token keyword">if</span> <span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">then</span><br>    y <span class="token operator">-</span><span class="token operator">=</span> <span class="token number">1</span><br>  <span class="token keyword">end</span><br>  <span class="token keyword">if</span> <span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">then</span><br>    y <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">1</span><br>  <span class="token keyword">end</span><br><span class="token keyword">end</span><br><br><span class="token keyword">function</span> <span class="token function">_draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br>  <span class="token function">cls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br>  <span class="token function">circfill</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><br><span class="token keyword">end</span></code></pre>
+<p>The CLI embeds this code into a <code>.p8</code> cartridge file along with your spritesheet.</p>
+<h2>Adding a Spritesheet</h2>
+<p>Create a <strong>128x128 pixel PNG</strong> image for your sprites:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"assets/sprites.png"</span><span class="token punctuation">,</span> <span class="token comment">// Must be 128x128</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><span class="token punctuation">,</span><br>  showStats<span class="token operator">:</span> <span class="token boolean">true</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>Use any image editor (Aseprite, Photoshop, GIMP, etc.). Colors are automatically matched to the PICO-8 palette.</p>
+<h2>Next Steps</h2>
+<ul>
+<li><a href="/reference/cli/">CLI Reference</a> - All config options</li>
+<li><a href="/reference/supported-features/">Supported Features</a> - What JavaScript features work</li>
+<li><a href="/example-projects/">Example Projects</a> - Full game templates</li>
+</ul>
 </main>
 </div>
 
@@ -133,7 +151,7 @@ taking care of the build process so you can focus on the implementation.</p>
         },{
           title: "Customized Transpilation",
           url: "/advanced-guides/customized-transpilation/",
-          content: "Customized transpilation jspicl does not support all expressions and statements out of the box but it is extensible enough to allow for these to be added. It also allows existing ones to be replaced if the implementation is considered unsatisfactory. This is done by supplying a customMappers option. The only requirement imposed on the AST node is that it contains a string property called type since this is used to identify the appropriate declaration, expression or statement. Resources AST Ex..."
+          content: "Customized transpilation jspicl does not support all expressions and statements out of the box but it is extensible enough to allow for these to be added. It also allows existing ones to be replaced if the implementation is considered unsatisfactory. This is done by supplying a customMappers option. The only requirement imposed on the AST node is that it contains a string property called type since this is used to identify the appropriate declaration, expression or statement. import { jspicl ..."
         },{
           title: "Example Projects",
           url: "/example-projects/",
@@ -154,6 +172,10 @@ taking care of the build process so you can focus on the implementation.</p>
           title: "Reference - CLI",
           url: "/reference/cli/",
           content: "CLI Reference Installation npm install -D @jspicl/cli Usage jspicl &lt; input > &lt; output > --config &lt; config-file > [ --watch ] Example: jspicl src/game.js build/game.p8 --config jspicl.config.ts --watch CLI Options Name Description --config , -c Path to config file (required) --watch , -w Watch for changes and rebuild Config File Create a config file (JavaScript or TypeScript): // jspicl.config.ts import type { Config } from \"@jspicl/cli/types\" ; const config : Config = { spritesheet..."
+        },{
+          title: "Supported Features",
+          url: "/reference/supported-features/",
+          content: "Supported Features This page lists the JavaScript features that jspicl supports and how they're transpiled to PICO-8 Lua. Language Features Variables JavaScript Lua let x = 1 local x = 1 const y = 2 local y = 2 var z = 3 z = 3 (global) Functions function greet ( name ) { return \"hello \" + name ; } const add = ( a , b ) => a + b ; function greet ( name ) return \"hello \" .. name end local add = function ( a , b ) return a + b end Control Flow All standard control flow is supported: if / els..."
         },{
           title: "Debugging with printh",
           url: "/recipes/debugging-with-printh/",

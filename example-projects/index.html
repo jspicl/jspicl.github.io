@@ -3,6 +3,7 @@
   <head>
     <title>jspicl - Example Projects</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sample PICO-8 games and starter templates built with jspicl. Includes Mario, Megaman, and minimal starter projects.">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="/assets/css/main.css" rel="stylesheet" />
@@ -69,15 +70,6 @@
             Troubleshooting
           </a></div>
       </div><div class="nav-section">
-        <div class="nav-section-header">Reference</div>
-        <div class="nav-section-items"><a href="/reference/api/"
-             class="nav-item">
-            API Reference
-          </a><a href="/reference/cli/"
-             class="nav-item">
-            CLI Reference
-          </a></div>
-      </div><div class="nav-section">
         <div class="nav-section-header">Recipes</div>
         <div class="nav-section-items"><a href="/recipes/debugging-with-printh/"
              class="nav-item">
@@ -88,6 +80,18 @@
           </a><a href="/recipes/polyfill-transform/"
              class="nav-item">
             Custom Polyfill Transforms
+          </a></div>
+      </div><div class="nav-section">
+        <div class="nav-section-header">Reference</div>
+        <div class="nav-section-items"><a href="/reference/api/"
+             class="nav-item">
+            API Reference
+          </a><a href="/reference/cli/"
+             class="nav-item">
+            CLI Reference
+          </a><a href="/reference/supported-features/"
+             class="nav-item">
+            Supported Features
           </a></div>
       </div></nav>
   </aside>
@@ -156,7 +160,7 @@ on GitHub for others to find.</p>
         },{
           title: "Customized Transpilation",
           url: "/advanced-guides/customized-transpilation/",
-          content: "Customized transpilation jspicl does not support all expressions and statements out of the box but it is extensible enough to allow for these to be added. It also allows existing ones to be replaced if the implementation is considered unsatisfactory. This is done by supplying a customMappers option. The only requirement imposed on the AST node is that it contains a string property called type since this is used to identify the appropriate declaration, expression or statement. Resources AST Ex..."
+          content: "Customized transpilation jspicl does not support all expressions and statements out of the box but it is extensible enough to allow for these to be added. It also allows existing ones to be replaced if the implementation is considered unsatisfactory. This is done by supplying a customMappers option. The only requirement imposed on the AST node is that it contains a string property called type since this is used to identify the appropriate declaration, expression or statement. import { jspicl ..."
         },{
           title: "Example Projects",
           url: "/example-projects/",
@@ -177,6 +181,10 @@ on GitHub for others to find.</p>
           title: "Reference - CLI",
           url: "/reference/cli/",
           content: "CLI Reference Installation npm install -D @jspicl/cli Usage jspicl &lt; input > &lt; output > --config &lt; config-file > [ --watch ] Example: jspicl src/game.js build/game.p8 --config jspicl.config.ts --watch CLI Options Name Description --config , -c Path to config file (required) --watch , -w Watch for changes and rebuild Config File Create a config file (JavaScript or TypeScript): // jspicl.config.ts import type { Config } from \"@jspicl/cli/types\" ; const config : Config = { spritesheet..."
+        },{
+          title: "Supported Features",
+          url: "/reference/supported-features/",
+          content: "Supported Features This page lists the JavaScript features that jspicl supports and how they're transpiled to PICO-8 Lua. Language Features Variables JavaScript Lua let x = 1 local x = 1 const y = 2 local y = 2 var z = 3 z = 3 (global) Functions function greet ( name ) { return \"hello \" + name ; } const add = ( a , b ) => a + b ; function greet ( name ) return \"hello \" .. name end local add = function ( a , b ) return a + b end Control Flow All standard control flow is supported: if / els..."
         },{
           title: "Debugging with printh",
           url: "/recipes/debugging-with-printh/",

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>jspicl - Reference - CLI</title>
+    <title>jspicl - Supported Features</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Complete CLI reference for @jspicl/cli. Config options, watch mode, hot reload, spritesheet setup, and PICO-8 integration.">
+    <meta name="description" content="JavaScript features supported by jspicl. Includes polyfills for arrays, strings, objects, and Math methods.">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="/assets/css/main.css" rel="stylesheet" />
@@ -87,186 +87,289 @@
              class="nav-item">
             API Reference
           </a><a href="/reference/cli/"
-             class="nav-item active">
+             class="nav-item">
             CLI Reference
           </a><a href="/reference/supported-features/"
-             class="nav-item">
+             class="nav-item active">
             Supported Features
           </a></div>
       </div></nav>
   </aside>
-  <main class="content"><h1>CLI Reference</h1>
-<h2>Installation</h2>
-<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">-D</span> @jspicl/cli</code></pre>
-<h2>Usage</h2>
-<pre class="language-bash"><code class="language-bash">jspicl <span class="token operator">&lt;</span>input<span class="token operator">></span> <span class="token operator">&lt;</span>output<span class="token operator">></span> <span class="token parameter variable">--config</span> <span class="token operator">&lt;</span>config-file<span class="token operator">></span> <span class="token punctuation">[</span>--watch<span class="token punctuation">]</span></code></pre>
-<p><strong>Example:</strong></p>
-<pre class="language-bash"><code class="language-bash">jspicl src/game.js build/game.p8 <span class="token parameter variable">--config</span> jspicl.config.ts <span class="token parameter variable">--watch</span></code></pre>
-<h2>CLI Options</h2>
+  <main class="content"><h1>Supported Features</h1>
+<p>This page lists the JavaScript features that jspicl supports and how they're transpiled to PICO-8 Lua.</p>
+<h2>Language Features</h2>
+<h3>Variables</h3>
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Description</th>
+<th>JavaScript</th>
+<th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>--config</code>, <code>-c</code></td>
-<td>Path to config file (required)</td>
+<td><code>let x = 1</code></td>
+<td><code>local x = 1</code></td>
 </tr>
 <tr>
-<td><code>--watch</code>, <code>-w</code></td>
-<td>Watch for changes and rebuild</td>
+<td><code>const y = 2</code></td>
+<td><code>local y = 2</code></td>
+</tr>
+<tr>
+<td><code>var z = 3</code></td>
+<td><code>z = 3</code> (global)</td>
 </tr>
 </tbody>
 </table>
-<h2>Config File</h2>
-<p>Create a config file (JavaScript or TypeScript):</p>
-<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span>Config<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/cli/types"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"assets/sprites.png"</span><span class="token punctuation">,</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><span class="token punctuation">,</span><br>  showStats<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    executablePath<span class="token operator">:</span> <span class="token string">"/Applications/PICO-8.app/Contents/MacOS/pico8"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
-<p><strong>Note:</strong> Config file paths (<code>jsOutput</code>, <code>luaOutput</code>, <code>spritesheetImagePath</code>) are resolved relative to the config file's directory unless an absolute path is specified.</p>
-<h3>Config Options</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>spritesheetImagePath</code></td>
-<td>string</td>
-<td>Yes</td>
-<td>Path to PNG spritesheet (must be 128x128 pixels)</td>
-</tr>
-<tr>
-<td><code>jsOutput</code></td>
-<td>string</td>
-<td>Yes</td>
-<td>Path to output bundled JavaScript (for debugging)</td>
-</tr>
-<tr>
-<td><code>includeBanner</code></td>
-<td>boolean</td>
-<td>No</td>
-<td>Include jspicl info comment in output</td>
-</tr>
-<tr>
-<td><code>luaOutput</code></td>
-<td>string</td>
-<td>No</td>
-<td>Path to output transpiled Lua (for debugging)</td>
-</tr>
-<tr>
-<td><code>minify</code></td>
-<td>boolean</td>
-<td>No</td>
-<td>Experimental: Minify bundled JavaScript via esbuild</td>
-</tr>
-<tr>
-<td><code>pipeOutputToConsole</code></td>
-<td>boolean</td>
-<td>No</td>
-<td>Pipe PICO-8 output to terminal</td>
-</tr>
-<tr>
-<td><code>showStats</code></td>
-<td>boolean</td>
-<td>No</td>
-<td>Display build statistics</td>
-</tr>
-<tr>
-<td><code>jspiclOptions</code></td>
-<td>object</td>
-<td>No</td>
-<td>Options passed to @jspicl/core (prettify, etc.)</td>
-</tr>
-<tr>
-<td><code>polyfillTransform</code></td>
-<td>function</td>
-<td>No</td>
-<td>Custom function to transform polyfill output</td>
-</tr>
-<tr>
-<td><code>picoOptions</code></td>
-<td>object</td>
-<td>No</td>
-<td>PICO-8 configuration (see below)</td>
-</tr>
-</tbody>
-</table>
-<h3>picoOptions</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>executablePath</code></td>
-<td>string</td>
-<td>Custom path to PICO-8 executable</td>
-</tr>
-<tr>
-<td><code>cartDataPath</code></td>
-<td>string</td>
-<td>Path to PICO-8 cart data directory</td>
-</tr>
-<tr>
-<td><code>cartDataId</code></td>
-<td>string</td>
-<td>Cart data ID for hot reload (default: &quot;jspicl_hotreload&quot;)</td>
-</tr>
-</tbody>
-</table>
-<h2>Debugging with printh</h2>
-<p>When <code>pipeOutputToConsole</code> is enabled, any <code>printh()</code> calls in your PICO-8 code will output to the CLI's terminal. This is useful for debugging without cluttering the PICO-8 console.</p>
-<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  pipeOutputToConsole<span class="token operator">:</span> <span class="token boolean">true</span><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
-<p>In your game code:</p>
-<pre class="language-js"><code class="language-js"><span class="token function">printh</span><span class="token punctuation">(</span><span class="token string">"Player position: "</span> <span class="token operator">+</span> player<span class="token punctuation">.</span>x <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> player<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-<p>The output will appear in your terminal where the CLI is running.</p>
-<h2>Hot Reload and Cartdata</h2>
-<p>The CLI uses PICO-8's <code>cartdata()</code> mechanism to achieve hot reloading during watch mode. This allows your game to automatically refresh when you save changes.</p>
-<h3>Using Your Own Cartdata</h3>
-<p>PICO-8 only allows <strong>one <code>cartdata()</code> call per cart</strong>. If you need to use cartdata yourself (for high scores, save data, etc.), the CLI can share the same cartdata slot.</p>
-<p>Configure <code>cartDataId</code> to match your game's cartdata ID:</p>
-<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    cartDataId<span class="token operator">:</span> <span class="token string">"mygame"</span> <span class="token comment">// Must match your cartdata("mygame") call</span><br>  <span class="token punctuation">}</span><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
-<p><strong>Important:</strong> The CLI reserves the last index (<code>dget(63)</code>) for hot reload signals. Avoid using this index in your game code.</p>
-<p>See the <a href="/recipes/cartdata-hot-reload/">Cartdata with Hot Reload</a> recipe for a complete example.</p>
-<h2>Watch Mode</h2>
-<p>The CLI will listen for changes when the <code>--watch</code> option is passed.</p>
-<p><video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading.mp4"></video></p>
-<p>This applies for the spritesheet as well. Simply save your image and your changes will be reloaded in PICO-8.</p>
-<p><video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading2.mp4"></video></p>
-<p><strong>Note:</strong> Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.</p>
-<h2>Spritesheets</h2>
-<p>Your spritesheet must be a <strong>128x128 pixel PNG</strong> image. The CLI will:</p>
-<ol>
-<li>Parse the PNG file</li>
-<li>Match each pixel to the closest PICO-8 palette color</li>
-<li>Embed the result in the cartridge's <code>__gfx__</code> section</li>
-</ol>
-<p>Use any image editor (Aseprite, Photoshop, GIMP, etc.) to create your sprites. When you save the file in watch mode, PICO-8 reloads automatically.</p>
-<h2>Cartridge Sections</h2>
-<p>When building a cartridge, the CLI only modifies:</p>
+<h3>Functions</h3>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">greet</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token string">"hello "</span> <span class="token operator">+</span> name<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">const</span> <span class="token function-variable function">add</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span></code></pre>
+<pre class="language-lua"><code class="language-lua"><span class="token keyword">function</span> <span class="token function">greet</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><br>  <span class="token keyword">return</span> <span class="token string">"hello "</span> <span class="token operator">..</span> name<br><span class="token keyword">end</span><br><br><span class="token keyword">local</span> add <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><br>  <span class="token keyword">return</span> a <span class="token operator">+</span> b<br><span class="token keyword">end</span></code></pre>
+<h3>Control Flow</h3>
+<p>All standard control flow is supported:</p>
 <ul>
-<li><code>__lua__</code> - Your transpiled game code</li>
-<li><code>__gfx__</code> - Your spritesheet</li>
+<li><code>if</code> / <code>else if</code> / <code>else</code></li>
+<li><code>for</code> loops (standard, for...of)</li>
+<li><code>while</code> loops</li>
+<li><code>switch</code> statements (transpiled to if/elseif chains)</li>
 </ul>
-<p>All other PICO-8 sections are preserved if the output file already exists:</p>
+<h3>Operators</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>Lua</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code> (strings)</td>
+<td><code>..</code></td>
+<td>String concatenation</td>
+</tr>
+<tr>
+<td><code>===</code>, <code>!==</code></td>
+<td><code>==</code>, <code>~=</code></td>
+<td>Equality</td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code>, <code>||</code></td>
+<td><code>and</code>, <code>or</code></td>
+<td>Logical</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td><code>not</code></td>
+<td>Negation</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td><code>%</code></td>
+<td>Modulo</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td><code>^</code></td>
+<td>Exponentiation</td>
+</tr>
+</tbody>
+</table>
+<h3>Destructuring</h3>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span>x<span class="token punctuation">,</span> y<span class="token punctuation">}</span> <span class="token operator">=</span> position<span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token punctuation">[</span>first<span class="token punctuation">,</span> second<span class="token punctuation">]</span> <span class="token operator">=</span> items<span class="token punctuation">;</span></code></pre>
+<pre class="language-lua"><code class="language-lua"><span class="token keyword">local</span> x <span class="token operator">=</span> position<span class="token punctuation">.</span>x<br><span class="token keyword">local</span> y <span class="token operator">=</span> position<span class="token punctuation">.</span>y<br><span class="token keyword">local</span> first <span class="token operator">=</span> items<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><br><span class="token keyword">local</span> second <span class="token operator">=</span> items<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span></code></pre>
+<h2>Polyfills</h2>
+<p>When you use JavaScript methods that don't exist in Lua, jspicl provides polyfill implementations. These are returned separately in the <code>polyfills</code> object.</p>
+<h3>Array Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>arr.map(fn)</code></td>
+<td>Transform each element</td>
+</tr>
+<tr>
+<td><code>arr.filter(fn)</code></td>
+<td>Keep elements matching predicate</td>
+</tr>
+<tr>
+<td><code>arr.reduce(fn, init)</code></td>
+<td>Reduce to single value</td>
+</tr>
+<tr>
+<td><code>arr.forEach(fn)</code></td>
+<td>Iterate without returning</td>
+</tr>
+<tr>
+<td><code>arr.includes(val)</code></td>
+<td>Check if value exists</td>
+</tr>
+<tr>
+<td><code>arr.findIndex(fn)</code></td>
+<td>Find index of matching element</td>
+</tr>
+<tr>
+<td><code>arr.join(sep)</code></td>
+<td>Join elements into string</td>
+</tr>
+<tr>
+<td><code>arr.push(val)</code></td>
+<td>Add element to end</td>
+</tr>
+<tr>
+<td><code>arr.pop()</code></td>
+<td>Remove and return last element</td>
+</tr>
+<tr>
+<td><code>arr.sort(fn)</code></td>
+<td>Sort elements (in-place)</td>
+</tr>
+<tr>
+<td><code>arr.length</code></td>
+<td>Get array length (via <code>#arr</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3>String Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>str.split(sep)</code></td>
+<td>Split into array</td>
+</tr>
+<tr>
+<td><code>str.substr(start, len)</code></td>
+<td>Extract substring by length</td>
+</tr>
+<tr>
+<td><code>str.substring(start, end)</code></td>
+<td>Extract substring by indices</td>
+</tr>
+<tr>
+<td><code>str.toString()</code></td>
+<td>Convert to string</td>
+</tr>
+<tr>
+<td><code>String.fromCharCode(n)</code></td>
+<td>Character from code (uses <code>chr()</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3>Object Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Object.assign(target, source)</code></td>
+<td>Merge objects</td>
+</tr>
+<tr>
+<td><code>Object.keys(obj)</code></td>
+<td>Get array of keys</td>
+</tr>
+<tr>
+<td><code>Object.values(obj)</code></td>
+<td>Get array of values</td>
+</tr>
+<tr>
+<td><code>Object.entries(obj)</code></td>
+<td>Get array of [key, value] pairs</td>
+</tr>
+</tbody>
+</table>
+<h3>Math Methods</h3>
+<p>These map directly to Lua/PICO-8 equivalents:</p>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>PICO-8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Math.abs(x)</code></td>
+<td><code>abs(x)</code></td>
+</tr>
+<tr>
+<td><code>Math.floor(x)</code></td>
+<td><code>flr(x)</code></td>
+</tr>
+<tr>
+<td><code>Math.ceil(x)</code></td>
+<td><code>ceil(x)</code></td>
+</tr>
+<tr>
+<td><code>Math.min(a, b)</code></td>
+<td><code>min(a, b)</code></td>
+</tr>
+<tr>
+<td><code>Math.max(a, b)</code></td>
+<td><code>max(a, b)</code></td>
+</tr>
+<tr>
+<td><code>Math.sqrt(x)</code></td>
+<td><code>sqrt(x)</code></td>
+</tr>
+<tr>
+<td><code>Math.sin(x)</code></td>
+<td><code>sin(x)</code></td>
+</tr>
+<tr>
+<td><code>Math.random()</code></td>
+<td><code>rnd()</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Console</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>PICO-8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>console.log(msg)</code></td>
+<td><code>printh(msg)</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Using Polyfills</h2>
+<p>Polyfills are returned in the <code>polyfills</code> object:</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span>code<span class="token punctuation">,</span> polyfills<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Combine polyfills with your code</span><br><span class="token keyword">const</span> finalCode <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span>polyfills<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"\n"</span> <span class="token operator">+</span> code<span class="token punctuation">;</span></code></pre>
+<p>When using the CLI, polyfills are automatically included in the cartridge.</p>
+<h2>Unsupported Features</h2>
+<p>The following JavaScript features are <strong>not supported</strong>:</p>
 <ul>
-<li><code>__gff__</code> - Sprite flags</li>
-<li><code>__map__</code> - Map data</li>
-<li><code>__sfx__</code> - Sound effects</li>
-<li><code>__music__</code> - Music patterns</li>
+<li><code>async</code> / <code>await</code></li>
+<li>Generators (<code>function*</code>)</li>
+<li>Classes (use plain objects and functions)</li>
+<li><code>try</code> / <code>catch</code> / <code>finally</code></li>
+<li>Regular expressions</li>
+<li><code>typeof</code>, <code>instanceof</code></li>
+<li>Spread operator in some contexts</li>
 </ul>
-<p>This means you can edit sound effects and music directly in PICO-8, and the CLI won't overwrite them.</p>
+<h2>Array Indexing</h2>
+<p><strong>Important:</strong> Lua arrays are 1-indexed, JavaScript arrays are 0-indexed.</p>
+<p>jspicl does <strong>not</strong> automatically convert indices. You need to account for this in your code:</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// JavaScript (0-indexed)</span><br><span class="token keyword">const</span> first <span class="token operator">=</span> items<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// In PICO-8 Lua, this will be items[0], which returns nil</span><br><span class="token comment">// Use 1-indexed access in your JavaScript:</span><br><span class="token keyword">const</span> first <span class="token operator">=</span> items<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Same for loops:</span><br><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> items<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span></code></pre>
 </main>
 </div>
 
