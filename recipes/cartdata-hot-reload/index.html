@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>jspicl - Using the API</title>
+    <title>jspicl - Cartdata with Hot Reload</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,7 +50,7 @@
       </div><div class="nav-section">
         <div class="nav-section-header">Advanced Guides</div>
         <div class="nav-section-items"><a href="/advanced-guides/using-api/"
-             class="nav-item active">
+             class="nav-item">
             Using the API
           </a><a href="/advanced-guides/customized-transpilation/"
              class="nav-item">
@@ -83,7 +83,7 @@
              class="nav-item">
             Debugging with printh
           </a><a href="/recipes/cartdata-hot-reload/"
-             class="nav-item">
+             class="nav-item active">
             Cartdata with Hot Reload
           </a><a href="/recipes/polyfill-transform/"
              class="nav-item">
@@ -91,47 +91,21 @@
           </a></div>
       </div></nav>
   </aside>
-  <main class="content"><h1>Using the API</h1>
-<p>The API can be used for transpiling JavaScript into the subset of Lua that PICO-8 uses.</p>
-<h2>Installation</h2>
-<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> @jspicl/core</code></pre>
-<h2>Usage</h2>
-<pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/core"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> javascriptCode <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string"><br>  // Your code here<br></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span>code<span class="token punctuation">,</span> polyfills<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>javascriptCode<span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-<h2>Known limitations</h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Array offsets</td>
-<td>Lua uses 1-based indexing for arrays which differ from JavaScript's zero-based. Keep this in mind when looping inside for-statements, you will need to explicitly use 1-based indexing.</td>
-</tr>
-<tr>
-<td>ES2015+</td>
-<td>Not all ES2015+ features are supported. Run your code through a transpiler first such as <a href="https://www.npmjs.com/package/babel">babel</a> or <a href="https://esbuild.github.io/">esbuild</a>.</td>
-</tr>
-<tr>
-<td>prototype chains</td>
-<td>Not supported</td>
-</tr>
-<tr>
-<td>Array methods</td>
-<td>Not all prototype methods have been polyfilled yet.</td>
-</tr>
-<tr>
-<td>Math.max</td>
-<td>Only supports two arguments.</td>
-</tr>
-<tr>
-<td>AST</td>
-<td>Not all declarations, expressions and statements have been implemented. More will be added as needed.</td>
-</tr>
-</tbody>
-</table>
+  <main class="content"><h1>Cartdata with Hot Reload</h1>
+<p>This recipe explains how to use your own <code>cartdata()</code> for save data while keeping the CLI's hot reload functionality working.</p>
+<h2>The Problem</h2>
+<p>The CLI uses PICO-8's <code>cartdata()</code> mechanism to signal hot reloads. However, PICO-8 only allows <strong>one <code>cartdata()</code> call per cart</strong>. If you call <code>cartdata()</code> in your game for saving high scores or progress, you'll get a conflict.</p>
+<h2>Solution</h2>
+<p>Configure the CLI to use the same cartdata ID as your game:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span>Config<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/cli/types"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"assets/sprites.png"</span><span class="token punctuation">,</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><span class="token punctuation">,</span><br>  picoOptions<span class="token operator">:</span> <span class="token punctuation">{</span><br>    cartDataId<span class="token operator">:</span> <span class="token string">"mygame_save"</span> <span class="token comment">// Use your game's cartdata ID</span><br>  <span class="token punctuation">}</span><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
+<p>In your game code, use the same ID:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">_init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">cartdata</span><span class="token punctuation">(</span><span class="token string">"mygame_save"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  highscore <span class="token operator">=</span> <span class="token function">dget</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Load high score from slot 0</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">saveHighscore</span><span class="token punctuation">(</span><span class="token parameter">score</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>score <span class="token operator">></span> highscore<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    highscore <span class="token operator">=</span> score<span class="token punctuation">;</span><br>    <span class="token function">dset</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> highscore<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Save to slot 0</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+<h2>Important: Reserved Slot</h2>
+<p>The CLI reserves <strong>slot 63</strong> (<code>dget(63)</code> / <code>dset(63)</code>) for hot reload signals. Do not use this slot in your game.</p>
+<p><strong>Available slots:</strong> 0-62 (63 slots total)</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Safe to use</span><br><span class="token function">dset</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> highscore<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">dset</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> playerLevel<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">dset</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> unlockedStages<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// ...</span><br><span class="token function">dset</span><span class="token punctuation">(</span><span class="token number">62</span><span class="token punctuation">,</span> lastSetting<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// DO NOT USE - reserved for hot reload</span><br><span class="token comment">// dset(63, anything);</span></code></pre>
+<h2>Complete Example</h2>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token constant">SLOT_HIGHSCORE</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token constant">SLOT_SOUND_ON</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token constant">SLOT_MUSIC_ON</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">_init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">cartdata</span><span class="token punctuation">(</span><span class="token string">"mygame_save"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Load saved data</span><br>  highscore <span class="token operator">=</span> <span class="token function">dget</span><span class="token punctuation">(</span><span class="token constant">SLOT_HIGHSCORE</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  soundOn <span class="token operator">=</span> <span class="token function">dget</span><span class="token punctuation">(</span><span class="token constant">SLOT_SOUND_ON</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span><br>  musicOn <span class="token operator">=</span> <span class="token function">dget</span><span class="token punctuation">(</span><span class="token constant">SLOT_MUSIC_ON</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">saveGame</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">dset</span><span class="token punctuation">(</span><span class="token constant">SLOT_HIGHSCORE</span><span class="token punctuation">,</span> highscore<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">dset</span><span class="token punctuation">(</span><span class="token constant">SLOT_SOUND_ON</span><span class="token punctuation">,</span> soundOn <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">dset</span><span class="token punctuation">(</span><span class="token constant">SLOT_MUSIC_ON</span><span class="token punctuation">,</span> musicOn <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
 </main>
 </div>
 

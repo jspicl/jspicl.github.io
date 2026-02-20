@@ -77,6 +77,18 @@
              class="nav-item">
             CLI Reference
           </a></div>
+      </div><div class="nav-section">
+        <div class="nav-section-header">Recipes</div>
+        <div class="nav-section-items"><a href="/recipes/debugging-with-printh/"
+             class="nav-item">
+            Debugging with printh
+          </a><a href="/recipes/cartdata-hot-reload/"
+             class="nav-item">
+            Cartdata with Hot Reload
+          </a><a href="/recipes/polyfill-transform/"
+             class="nav-item">
+            Custom Polyfill Transforms
+          </a></div>
       </div></nav>
   </aside>
   <main class="content"><h1>Migration Guide</h1>
@@ -123,7 +135,7 @@
       const searchData = [{
           title: "Introduction",
           url: "/",
-          content: "Welcome to the jspicl documentation jspicl is a JavaScript to PICO-8 Lua transpiler. It enables you to develop PICO-8 games in JavaScript by creating an AST out of the JavaScript code and then transpiling it down to the Lua subset of which PICO-8 supports. You have two paths forward, either using the API to transpile JavaScript to PICO-8 Lua or the CLI which uses the API behind the scenes to create PICO-8 cartridges. Guides Basic guides Learn how to use the CLI to get you up and running quick..."
+          content: "Welcome to the jspicl documentation jspicl is a JavaScript to PICO-8 Lua transpiler. It enables you to develop PICO-8 games in JavaScript by creating an AST out of the JavaScript code and then transpiling it down to the Lua subset that PICO-8 supports. Choose Your Path @jspicl/cli Ready-to-use tool for PICO-8 game development. Handles bundling, transpiling, and cartridge generation. Use PNG spritesheets with your favorite image editor. Includes hot reload for rapid iteration. @jspicl/core The..."
         },{
           title: "Getting Started",
           url: "/basic-guides/getting-started/",
@@ -151,11 +163,23 @@
         },{
           title: "Reference - API",
           url: "/reference/api/",
-          content: "API Reference jspicl Entry point for transpiling your JavaScript code. function jspicl ( source : string , options ? : Options ) : Output ; root Root node of your AST. Jspicl will traverse and transpile the entire hierarchy. options Configuration options that affect the final output. Options type Options = { prettify ? : boolean ; customMappers ? : Record &lt; string , AstNodeVisitor > ; } ; prettify = true Prettifies the transpiled code. By default, jspicl formats the Lua output for you but ..."
+          content: "API Reference Installation npm install -D @jspicl/cli Usage Entry point for transpiling your JavaScript code. function jspicl ( source : string , options ? : Options ) : Output ; root Root node of your AST. Jspicl will traverse and transpile the entire hierarchy. options Configuration options that affect the final output. Options type Options = { prettify ? : boolean ; customMappers ? : Record &lt; string , AstNodeVisitor > ; } ; prettify = true Prettifies the transpiled code. By default, jsp..."
         },{
           title: "Reference - CLI",
           url: "/reference/cli/",
           content: "CLI Reference Installation npm install -D @jspicl/cli Usage jspicl &lt; input > &lt; output > --config &lt; config-file > [ --watch ] Example: jspicl src/game.js build/game.p8 --config jspicl.config.ts --watch CLI Options Name Description --config , -c Path to config file (required) --watch , -w Watch for changes and rebuild Config File Create a config file (JavaScript or TypeScript): // jspicl.config.ts import type { Config } from \"@jspicl/cli/types\" ; const config : Config = { spritesheet..."
+        },{
+          title: "Debugging with printh",
+          url: "/recipes/debugging-with-printh/",
+          content: "Debugging with printh This recipe shows how to use PICO-8's printh() function to output debug information to your terminal. Setup Enable pipeOutputToConsole in your config: // jspicl.config.ts import type { Config } from \"@jspicl/cli/types\" ; const config : Config = { pipeOutputToConsole : true , spritesheetImagePath : \"assets/sprites.png\" , jsOutput : \"build/game.js\" // ... } ; export default config ; Usage Use printh() anywhere in your game code: function _update ( ) { if ( btn ( 0 ) ..."
+        },{
+          title: "Cartdata with Hot Reload",
+          url: "/recipes/cartdata-hot-reload/",
+          content: "Cartdata with Hot Reload This recipe explains how to use your own cartdata() for save data while keeping the CLI's hot reload functionality working. The Problem The CLI uses PICO-8's cartdata() mechanism to signal hot reloads. However, PICO-8 only allows one cartdata() call per cart . If you call cartdata() in your game for saving high scores or progress, you'll get a conflict. Solution Configure the CLI to use the same cartdata ID as your game: // jspicl.config.ts import type { Config } from..."
+        },{
+          title: "Custom Polyfill Transforms",
+          url: "/recipes/polyfill-transform/",
+          content: "Custom Polyfill Transforms This recipe shows how to use polyfillTransform to customize the polyfill code generated by jspicl. What are Polyfills? When you use JavaScript methods that don't have direct Lua equivalents (like array.map() , array.filter() , etc.), jspicl generates polyfill functions prefixed with _ (e.g., _map() , _filter() ). These are included in your cartridge automatically. Basic Usage The polyfillTransform function receives a record where keys are polyfill names and values a..."
         }];
     </script>
     <script src="/assets/js/search.js"></script>

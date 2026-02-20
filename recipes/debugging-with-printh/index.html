@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>jspicl - Using the API</title>
+    <title>jspicl - Debugging with printh</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,7 +50,7 @@
       </div><div class="nav-section">
         <div class="nav-section-header">Advanced Guides</div>
         <div class="nav-section-items"><a href="/advanced-guides/using-api/"
-             class="nav-item active">
+             class="nav-item">
             Using the API
           </a><a href="/advanced-guides/customized-transpilation/"
              class="nav-item">
@@ -80,7 +80,7 @@
       </div><div class="nav-section">
         <div class="nav-section-header">Recipes</div>
         <div class="nav-section-items"><a href="/recipes/debugging-with-printh/"
-             class="nav-item">
+             class="nav-item active">
             Debugging with printh
           </a><a href="/recipes/cartdata-hot-reload/"
              class="nav-item">
@@ -91,47 +91,27 @@
           </a></div>
       </div></nav>
   </aside>
-  <main class="content"><h1>Using the API</h1>
-<p>The API can be used for transpiling JavaScript into the subset of Lua that PICO-8 uses.</p>
-<h2>Installation</h2>
-<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> @jspicl/core</code></pre>
+  <main class="content"><h1>Debugging with printh</h1>
+<p>This recipe shows how to use PICO-8's <code>printh()</code> function to output debug information to your terminal.</p>
+<h2>Setup</h2>
+<p>Enable <code>pipeOutputToConsole</code> in your config:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// jspicl.config.ts</span><br><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span>Config<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/cli/types"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config<span class="token operator">:</span> Config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  pipeOutputToConsole<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  spritesheetImagePath<span class="token operator">:</span> <span class="token string">"assets/sprites.png"</span><span class="token punctuation">,</span><br>  jsOutput<span class="token operator">:</span> <span class="token string">"build/game.js"</span><br>  <span class="token comment">// ...</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
 <h2>Usage</h2>
-<pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>jspicl<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@jspicl/core"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> javascriptCode <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string"><br>  // Your code here<br></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span>code<span class="token punctuation">,</span> polyfills<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">jspicl</span><span class="token punctuation">(</span>javascriptCode<span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-<h2>Known limitations</h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Array offsets</td>
-<td>Lua uses 1-based indexing for arrays which differ from JavaScript's zero-based. Keep this in mind when looping inside for-statements, you will need to explicitly use 1-based indexing.</td>
-</tr>
-<tr>
-<td>ES2015+</td>
-<td>Not all ES2015+ features are supported. Run your code through a transpiler first such as <a href="https://www.npmjs.com/package/babel">babel</a> or <a href="https://esbuild.github.io/">esbuild</a>.</td>
-</tr>
-<tr>
-<td>prototype chains</td>
-<td>Not supported</td>
-</tr>
-<tr>
-<td>Array methods</td>
-<td>Not all prototype methods have been polyfilled yet.</td>
-</tr>
-<tr>
-<td>Math.max</td>
-<td>Only supports two arguments.</td>
-</tr>
-<tr>
-<td>AST</td>
-<td>Not all declarations, expressions and statements have been implemented. More will be added as needed.</td>
-</tr>
-</tbody>
-</table>
+<p>Use <code>printh()</code> anywhere in your game code:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">_update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">btn</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    player<span class="token punctuation">.</span>x <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>    <span class="token function">printh</span><span class="token punctuation">(</span><span class="token string">"Player moved left: "</span> <span class="token operator">+</span> player<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+<h2>Output</h2>
+<p>When running in watch mode, you'll see the output in your terminal:</p>
+<pre><code>Player moved left: 63
+Player moved left: 62
+Player moved left: 61
+</code></pre>
+<h2>Tips</h2>
+<ul>
+<li>Use <code>printh()</code> for debugging values that change frequently (positions, states, etc.)</li>
+<li>Unlike <code>print()</code>, <code>printh()</code> doesn't appear on the PICO-8 screen</li>
+<li>Combine with watch mode for a rapid debug-fix-test cycle</li>
+<li>Remove or comment out <code>printh()</code> calls before publishing your game to avoid unnecessary overhead</li>
+</ul>
 </main>
 </div>
 
