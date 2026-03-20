@@ -2,79 +2,79 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jspicl.github.io/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/basic-guides/getting-started/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/advanced-guides/using-api/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/advanced-guides/customized-transpilation/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/example-projects/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/migration-guide/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/troubleshooting/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/reference/api/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/reference/cli/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/reference/supported-features/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/recipes/debugging-with-printh/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/recipes/cartdata-hot-reload/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://jspicl.github.io/recipes/polyfill-transform/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
